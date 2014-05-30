@@ -206,6 +206,7 @@
             throw new Error("Query string property must be either a string or object.");
         },
 
+        // BUG #2953: The url needs to be same otherwise it will cause a memory leak
         getUrl: function (connection, transport, reconnecting, poll, ajaxPost) {
             /// <summary>Gets the url for making a GET based connect request</summary>
             var baseUrl = transport === "webSockets" ? "" : connection.baseUrl,

@@ -97,14 +97,26 @@ namespace Microsoft.AspNet.SignalR.Transports
 
         protected override async Task InitializeMessageId()
         {
-            _lastMessageId = Context.Request.QueryString["messageId"]
-                ?? (await Context.Request.ReadForm().PreserveCulture())["messageId"];
+            _lastMessageId = Context.Request.QueryString["messageId"];
+
+            if (_lastMessageId == null)
+            {
+                var form = await Context.Request.ReadForm().PreserveCulture();
+                _lastMessageId = form["messageId"];
+            }
         }
 
-        protected override async Task<string> RetrieveGroupsToken()
+        [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "This is for async.")]
+        public override async Task<string> GetGroupsToken()
         {
-            return Context.Request.QueryString["groupsToken"]
-                ?? (await Context.Request.ReadForm().PreserveCulture())["groupsToken"];
+            var groupsToken = Context.Request.QueryString["groupsToken"];
+
+            if (groupsToken == null)
+            {
+                var form = await Context.Request.ReadForm().PreserveCulture();
+                groupsToken = form["groupsToken"];
+            }
+            return groupsToken;
         }
 
         public override Task KeepAlive()

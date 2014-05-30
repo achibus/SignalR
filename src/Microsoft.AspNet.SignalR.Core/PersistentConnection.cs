@@ -238,7 +238,7 @@ namespace Microsoft.AspNet.SignalR
             string userId = UserIdProvider.GetUserId(context.Request);
 
             IList<string> signals = GetSignals(userId, connectionId);
-            IList<string> groups = AppendGroupPrefixes(context, connectionId, await Transport.GroupsToken.PreserveCulture());
+            IList<string> groups = AppendGroupPrefixes(context, connectionId, await Transport.GetGroupsToken().PreserveCulture());
 
             Connection connection = CreateConnection(connectionId, signals, groups);
 

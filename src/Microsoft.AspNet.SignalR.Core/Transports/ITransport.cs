@@ -42,7 +42,9 @@ namespace Microsoft.AspNet.SignalR.Transports
         /// <summary>
         /// Get groupsToken in request over the transport.
         /// </summary>
-        Task<string> GroupsToken { get; }
+        /// <returns>groupsToken in request</returns>
+        [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "This is for async.")]
+        Task<string> GetGroupsToken();
 
         /// <summary>
         /// Processes the specified <see cref="ITransportConnection"/> for this transport.

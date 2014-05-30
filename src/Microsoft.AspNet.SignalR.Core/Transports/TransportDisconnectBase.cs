@@ -106,12 +106,8 @@ namespace Microsoft.AspNet.SignalR.Transports
             return TaskAsyncHelper.Empty;
         }
 
-        public Task<string> GroupsToken
-        {
-            get { return RetrieveGroupsToken(); }
-        }
-
-        protected virtual Task<string> RetrieveGroupsToken()
+        [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "This is for async.")]
+        public virtual Task<string> GetGroupsToken()
         {
             return TaskAsyncHelper.FromResult(Context.Request.QueryString["groupsToken"]);
         }

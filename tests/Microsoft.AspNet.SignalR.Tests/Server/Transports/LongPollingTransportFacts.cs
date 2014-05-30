@@ -82,7 +82,10 @@ namespace Microsoft.AspNet.SignalR.Tests.Server.Transports
             {
                 var request = new Mock<IRequest>();
                 request.Setup(m => m.QueryString).Returns(new NameValueCollectionWrapper());
+                request.Setup(m => m.ReadForm())
+                    .Returns(TaskAsyncHelper.FromResult((INameValueCollection)new NameValueCollectionWrapper()));
                 request.Setup(m => m.LocalPath).Returns(requestPath);
+
 
                 var response = new Mock<IResponse>();
                 response.Setup(m => m.Flush()).Returns(TaskAsyncHelper.Empty);

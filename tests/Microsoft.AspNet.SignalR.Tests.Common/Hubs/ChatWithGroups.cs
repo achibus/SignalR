@@ -1,6 +1,5 @@
 ﻿using System;
-using System.IO;
-using System.Web.Configuration;
+using System.Web;
 using Microsoft.AspNet.SignalR.Hubs;
 
 namespace Microsoft.AspNet.SignalR.Tests.Common.Hubs
@@ -25,18 +24,7 @@ namespace Microsoft.AspNet.SignalR.Tests.Common.Hubs
 
         public void TriggerAppDomainRestart()
         {
-            var config = WebConfigurationManager.OpenWebConfiguration("~");
-            string path = config.FilePath.ToLower().Replace("web.config", "");
-            string file = Path.Combine(path, @"bin\test.dll");
-
-            if (File.Exists(file))
-            {
-                File.Delete(file);
-            }
-            else
-            {
-                File.WriteAllText(file, "");
-            }
+            HttpRuntime.UnloadAppDomain();
         }
     }
 }

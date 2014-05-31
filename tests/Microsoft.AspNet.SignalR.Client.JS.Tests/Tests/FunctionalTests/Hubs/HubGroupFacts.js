@@ -124,9 +124,12 @@ testUtilities.runWithAllTransports(function (transport) {
         connection.reconnected(function () {
             assert.ok(true, "Successfuly raised reconnected event ");
 
-            groupChat.server.send(groupName, "hello").done(function () {
-                assert.ok(true, "Successful send to group");
-            });
+            // Workaround for bug#2642 on webSockets that requires to call server method after a short timeout in reconnected event   
+            window.setTimeout(function () {
+                groupChat.server.send(groupName, "hello").done(function () {
+                    assert.ok(true, "Successful send to group");
+                });
+            }, 30);
         });
 
         connection.start({ transport: transport }).done(function () {

@@ -8,7 +8,7 @@ namespace Microsoft.AspNet.SignalR.Redis
     [Serializable]
     public class RedisConnectionException : Exception
     {
-        public RedisConnectionException() : base() { }
+        public RedisConnectionException() { }
         public RedisConnectionException(string errorMessage) : base(errorMessage) { }
         public RedisConnectionException(string message, Exception inner) : base(message, inner) { }
         protected RedisConnectionException(SerializationInfo info, StreamingContext context)

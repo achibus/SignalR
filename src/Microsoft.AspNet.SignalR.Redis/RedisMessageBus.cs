@@ -161,7 +161,7 @@ namespace Microsoft.AspNet.SignalR.Redis
             {
                 await ConnectToRedisAsync();
 
-                connectTaskFaulted = true;
+                connectTaskFaulted = false;
 
                 var oldState = Interlocked.CompareExchange(ref _state,
                                            State.Connected,
@@ -189,11 +189,7 @@ namespace Microsoft.AspNet.SignalR.Redis
                 connectTaskFaulted = true;
             }
 
-            if (connectTaskFaulted == false)
-            {
-                return;
-            }
-            else
+            if (connectTaskFaulted)
             {
                 await Task.Delay(ReconnectDelay);
                 ConnectWithRetry();
@@ -216,9 +212,8 @@ namespace Microsoft.AspNet.SignalR.Redis
             {
                 _trace.TraceInformation("Connecting...");
 
-                var conn = await ConnectionMultiplexer.ConnectAsync(_connectionString);
+                _connection = await ConnectionMultiplexer.ConnectAsync(_connectionString);
 
-                _connection = conn;
                 _trace.TraceInformation("Connection opened");
 
                 _connection.ConnectionFailed += OnConnectionClosed;
